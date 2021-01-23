@@ -1,0 +1,53 @@
+---
+title: "Car Fuel Efficiency Predictor"
+author: "Ronald"
+date: "23 Jan 2021"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Project Aim
+
+This project is to build a fuel efficiency predictor shiny app for cars.
+
+The app is available at <https://ronaldyeo.shinyapps.io/Car_Fuel_Efficiency_Predictor/>
+
+The github repository is available at
+<https://github.com/ronaldyeo/Car-Fuel-Efficiency-Predictor/>
+
+
+## Prediction Model Data Set
+
+The app prediction model was built using the _mtcars_ data set. 
+
+```{r, echo = TRUE}
+head(mtcars)
+```
+
+
+## Prediction Model Building
+
+As 1/4 mile time for cars are usually not available, it was removed from the feature for model building.  A stepwise algorithm by AIC was then performed to select the features for model building. 3 features, (i) no. of cylinders, (ii) gross horsepower, and (iii) weight were selected as the predictors for the regression model. A 10-fold cross validation of the regression model was conducted to test and score the model. 
+
+```{r, echo = TRUE, eval = FALSE}
+model <- lm(mpg ~ . -qsec, data = mtcars)
+step(model)
+control.par <- trainControl(method="cv", 10)
+lm_model <- train(mpg ~ cyl + hp + wt, data=mtcars, method="lm",  trControl=control.par)
+lm_model
+```
+
+The regression model has a Rsquared of **0.9052981**.
+
+## Fuel Efficiency Predictor App
+
+Input the 3 features,
+
+(i) _no. of cylinders_, 
+(ii) _gross horsepower_, and 
+(iii) _weight_ 
+
+of your car in the shiny app to predict your car fuel efficiency.
